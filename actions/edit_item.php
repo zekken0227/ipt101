@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category = trim($_POST['category'] ?? '');
     $quantity = (int)($_POST['quantity'] ?? 0);
     $unit = trim($_POST['unit'] ?? '');
-    $minimum_stock = (int)($_POST['minimum_stock'] ?? 10);
     $description = trim($_POST['description'] ?? '');
 
     // Validate input
@@ -41,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 category = ?, 
                 quantity = ?,
                 unit = ?,
-                minimum_stock = ?,
                 description = ?,
                 updated_at = CURRENT_TIMESTAMP
                 WHERE id = ?");
@@ -51,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $category,
                 $quantity,
                 $unit,
-                $minimum_stock,
                 $description,
                 $item_id
             ]);

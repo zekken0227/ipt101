@@ -1,4 +1,4 @@
-# Inventory Management System
+# CIMS
 
 A web-based inventory management system built with PHP and MySQL. This system allows users to manage inventory items, track stock levels, and handle item requests.
 
@@ -21,7 +21,7 @@ A web-based inventory management system built with PHP and MySQL. This system al
 ## Installation
 
 1. Clone or download this repository to your web server's root directory
-2. Create a new MySQL database named `inventory_system`
+2. Create a new MySQL database named `ipt101`
 3. Import the `database.sql` file to set up the database structure
 4. Configure the database connection in `config/database.php`
 5. Access the system through your web browser
@@ -34,7 +34,7 @@ A web-based inventory management system built with PHP and MySQL. This system al
 ## Directory Structure
 
 ```
-inventory_system/
+cims/
 ├── actions/
 │   ├── add_item.php
 │   └── delete_item.php
