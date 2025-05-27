@@ -36,10 +36,11 @@ CREATE TABLE IF NOT EXISTS requests (
     purpose TEXT,
     status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
     approved_by INT,
+    item_deleted BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (item_id) REFERENCES inventory(id),
+    FOREIGN KEY (item_id) REFERENCES inventory(id) ON DELETE RESTRICT,
     FOREIGN KEY (approved_by) REFERENCES users(id)
 );
 

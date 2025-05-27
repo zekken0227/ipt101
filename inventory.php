@@ -16,7 +16,7 @@ $items = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory - IMS</title>
+    <title>Inventory - CIMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -76,7 +76,7 @@ $items = $stmt->fetchAll();
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="brand">
-            <h4>IMS</h4>
+            <h4>CIMS</h4>
         </div>
         <nav class="nav flex-column">
             <a class="nav-link" href="dashboard.php">
@@ -156,8 +156,16 @@ $items = $stmt->fetchAll();
                             <tbody>
                                 <?php foreach ($items as $item): ?>
                                     <?php
-                                    $status = $item['quantity'] <= $item['minimum_stock'] ? 'Low Stock' : 'In Stock';
-                                    $statusClass = $item['quantity'] <= $item['minimum_stock'] ? 'text-danger' : 'text-success';
+                                    if ($item['quantity'] == 0) {
+                                        $status = 'No Stock';
+                                        $statusClass = 'text-danger';
+                                    } elseif ($item['quantity'] <= $item['minimum_stock']) {
+                                        $status = 'Low Stock';
+                                        $statusClass = 'text-danger';
+                                    } else {
+                                        $status = 'In Stock';
+                                        $statusClass = 'text-success';
+                                    }
                                     ?>
                                     <tr>
                                         <td><?php echo htmlspecialchars($item['name']); ?></td>
@@ -166,7 +174,7 @@ $items = $stmt->fetchAll();
                                         <td><?php echo htmlspecialchars($item['unit']); ?></td>
                                         <td><span class="<?php echo $statusClass; ?>"><?php echo $status; ?></span></td>
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editItem(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['name']); ?>', '<?php echo htmlspecialchars($item['category']); ?>', <?php echo htmlspecialchars($item['quantity']); ?>, '<?php echo htmlspecialchars($item['unit']); ?>', <?php echo htmlspecialchars($item['minimum_stock']); ?>, '<?php echo htmlspecialchars($item['description']); ?>')">
+                                            <button class="btn btn-sm btn-outline-primary" onclick="editItem(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['name']); ?>', '<?php echo htmlspecialchars($item['category']); ?>', <?php echo htmlspecialchars($item['quantity']); ?>, '<?php echo htmlspecialchars($item['unit']); ?>', '<?php echo htmlspecialchars($item['description']); ?>')">
                                                 <i class="bi bi-pencil"></i> Edit
                                             </button>
                                             <button class="btn btn-sm btn-outline-danger" 
@@ -223,7 +231,11 @@ $items = $stmt->fetchAll();
                         </div>
                         <div class="mb-3">
                             <label for="category" class="form-label">Category</label>
-                            <input type="text" class="form-control" id="category" name="category" required>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="School Supplies">School Supplies</option>
+                                <option value="Appliances">Appliances</option>
+                                <option value="Furniture">Furniture</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="quantity" class="form-label">Quantity</label>
@@ -232,10 +244,6 @@ $items = $stmt->fetchAll();
                         <div class="mb-3">
                             <label for="unit" class="form-label">Unit</label>
                             <input type="text" class="form-control" id="unit" name="unit" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="minimum_stock" class="form-label">Minimum Stock Level</label>
-                            <input type="number" class="form-control" id="minimum_stock" name="minimum_stock" min="0" value="10">
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
@@ -268,7 +276,11 @@ $items = $stmt->fetchAll();
                         </div>
                         <div class="mb-3">
                             <label for="edit_category" class="form-label">Category</label>
-                            <input type="text" class="form-control" id="edit_category" name="category" required>
+                            <select class="form-select" id="edit_category" name="category" required>
+                                <option value="School Supplies">School Supplies</option>
+                                <option value="Appliances">Appliances</option>
+                                <option value="Furniture">Furniture</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="edit_quantity" class="form-label">Quantity</label>
@@ -278,10 +290,7 @@ $items = $stmt->fetchAll();
                             <label for="edit_unit" class="form-label">Unit</label>
                             <input type="text" class="form-control" id="edit_unit" name="unit" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="edit_minimum_stock" class="form-label">Minimum Stock Level</label>
-                            <input type="number" class="form-control" id="edit_minimum_stock" name="minimum_stock" min="0">
-                        </div>
+
                         <div class="mb-3">
                             <label for="edit_description" class="form-label">Description</label>
                             <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
@@ -306,13 +315,12 @@ $items = $stmt->fetchAll();
         }
 
         // Function to show edit modal with item data
-        function editItem(itemId, name, category, quantity, unit, minimumStock, description) {
+        function editItem(itemId, name, category, quantity, unit, description) {
             document.getElementById('edit_item_id').value = itemId;
             document.getElementById('edit_name').value = name;
             document.getElementById('edit_category').value = category;
             document.getElementById('edit_quantity').value = quantity;
             document.getElementById('edit_unit').value = unit;
-            document.getElementById('edit_minimum_stock').value = minimumStock;
             document.getElementById('edit_description').value = description || '';
             new bootstrap.Modal(document.getElementById('editItemModal')).show();
         }

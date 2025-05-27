@@ -6,7 +6,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Management System - Login</title>
+    <title>CIMS - Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -23,12 +23,27 @@ session_start();
         .alert {
             margin-bottom: 20px;
         }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .login-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="login-container">
-            <h2 class="text-center mb-4">Login</h2>
+            <div class="login-header">
+                <h2>Welcome to CIMS</h2>
+                <p>Login to access the system</p>
+            </div>
             <?php if (isset($_SESSION['error'])): ?>
                 <div class="alert alert-danger">
                     <?php 

@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category = trim($_POST['category'] ?? '');
     $quantity = (int)($_POST['quantity'] ?? 0);
     $unit = trim($_POST['unit'] ?? '');
-    $minimum_stock = (int)($_POST['minimum_stock'] ?? 10);
     $description = trim($_POST['description'] ?? '');
 
     // Validate input
@@ -28,14 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->beginTransaction();
 
         // Insert into inventory
-        $stmt = $pdo->prepare("INSERT INTO inventory (name, category, quantity, unit, minimum_stock, description) 
-                              VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO inventory (name, category, quantity, unit, description) 
+                              VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([
             $name,
             $category,
             $quantity,
             $unit,
-            $minimum_stock,
             $description
         ]);
         
